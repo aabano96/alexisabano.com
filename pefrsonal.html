@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contact</title>
+    <title>Alexis' Fun & Useful Website</title>
+    <meta charset="UTF-8">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -10,8 +11,16 @@
             margin: 0;
             padding: 20px;
         }
-        h1 {
+        h1, h2 {
             color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
         }
         button {
             background-color: #008CBA;
@@ -26,39 +35,61 @@
         button:hover {
             background-color: #005f73;
         }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+        }
         img {
             margin-top: 15px;
             max-width: 300px;
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
         }
-        #joke {
-            font-style: italic;
-            margin-top: 15px;
+        .result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Contact Information</h1>
-    <p>You can reach me at <a href="mailto:mail@alexisabano.com">mail@alexisabano.com</a> or at +63 976 003 0238.</p>
+    <div class="container">
+        <h1>Contact Information</h1>
+        <p>You can reach me at <a href="mailto:mail@alexisabano.com">mail@alexisabano.com</a> or at +63 976 003 0238.</p>
+        
+        <h2>📅 How Many Days Between?</h2>
+        <input type="date" id="startDate"> to <input type="date" id="endDate">
+        <button onclick="calculateDays()">Calculate</button>
+        <p class="result" id="daysResult"></p>
 
-    <h2>Fun Stuff</h2>
+        <h2>💰 GST Calculator (Australian Real Estate)</h2>
+        <input type="number" id="gstInput" placeholder="Enter Price in AUD">
+        <button onclick="addGST()">Add 10% GST</button>
+        <button onclick="removeGST()">Remove 10% GST</button>
+        <p class="result" id="gstResult"></p>
 
-    <button onclick="getCat()">🐱 Show Me a Random Cat</button>
-    <br>
-    <img id="catImage" src="" alt="Random Cat" style="display:none;">
+        <h2>🎉 Fun Stuff</h2>
 
-    <button onclick="getDog()">🐶 Show Me a Random Dog</button>
-    <br>
-    <img id="dogImage" src="" alt="Random Dog" style="display:none;">
+        <button onclick="getCat()">🐱 Show Me a Random Cat</button>
+        <br>
+        <img id="catImage" src="" alt="Random Cat" style="display:none;">
 
-    <button onclick="getJoke()">😂 Tell Me a Joke</button>
-    <p id="joke"></p>
+        <button onclick="getDog()">🐶 Show Me a Random Dog</button>
+        <br>
+        <img id="dogImage" src="" alt="Random Dog" style="display:none;">
 
-    <button onclick="changeColor()">🎨 Change Background Color</button>
+        <button onclick="getJoke()">😂 Tell Me a Joke</button>
+        <p id="joke"></p>
 
-    <p>Looking forward to hearing from you.</p>
+        <button onclick="changeColor()">🎨 Change Background Color</button>
+
+        <p>Looking forward to hearing from you.</p>
+    </div>
 
     <script>
         function getCat() {
@@ -90,6 +121,41 @@
         function changeColor() {
             const colors = ["#FFB6C1", "#FFD700", "#98FB98", "#87CEEB", "#FF6347", "#E6E6FA"];
             document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function calculateDays() {
+            let start = new Date(document.getElementById("startDate").value);
+            let end = new Date(document.getElementById("endDate").value);
+
+            if (isNaN(start) || isNaN(end)) {
+                document.getElementById("daysResult").innerText = "Please select both dates.";
+                return;
+            }
+
+            let difference = Math.abs(end - start);
+            let daysBetween = difference / (1000 * 60 * 60 * 24);
+
+            document.getElementById("daysResult").innerText = `Days Between: ${daysBetween} days`;
+        }
+
+        function addGST() {
+            let amount = parseFloat(document.getElementById("gstInput").value);
+            if (isNaN(amount)) {
+                document.getElementById("gstResult").innerText = "Please enter a valid amount.";
+                return;
+            }
+            let total = amount * 1.1;
+            document.getElementById("gstResult").innerText = `Price with GST: AUD ${total.toFixed(2)}`;
+        }
+
+        function removeGST() {
+            let amount = parseFloat(document.getElementById("gstInput").value);
+            if (isNaN(amount)) {
+                document.getElementById("gstResult").innerText = "Please enter a valid amount.";
+                return;
+            }
+            let total = amount / 1.1;
+            document.getElementById("gstResult").innerText = `Price without GST: AUD ${total.toFixed(2)}`;
         }
     </script>
 
