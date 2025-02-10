@@ -1,13 +1,97 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Contact</title>
-    </head>
-    <body>
- <h1>Contact Information</h1>
-        
-<p>You can reach me at mail@alexisabano.com or at +63 976 003 0238.</p>
+<head>
+    <title>Contact</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #005f73;
+        }
+        img {
+            margin-top: 15px;
+            max-width: 300px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+        }
+        #joke {
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
 
-<p>Looking forward to hearing from you.
-    </body>
+    <h1>Contact Information</h1>
+    <p>You can reach me at <a href="mailto:mail@alexisabano.com">mail@alexisabano.com</a> or at +63 976 003 0238.</p>
+
+    <h2>Fun Stuff</h2>
+
+    <button onclick="getCat()">🐱 Show Me a Random Cat</button>
+    <br>
+    <img id="catImage" src="" alt="Random Cat" style="display:none;">
+
+    <button onclick="getDog()">🐶 Show Me a Random Dog</button>
+    <br>
+    <img id="dogImage" src="" alt="Random Dog" style="display:none;">
+
+    <button onclick="getJoke()">😂 Tell Me a Joke</button>
+    <p id="joke"></p>
+
+    <button onclick="changeColor()">🎨 Change Background Color</button>
+
+    <p>Looking forward to hearing from you.</p>
+
+    <script>
+        function getCat() {
+            fetch('https://api.thecatapi.com/v1/images/search')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("catImage").src = data[0].url;
+                    document.getElementById("catImage").style.display = "block";
+                });
+        }
+
+        function getDog() {
+            fetch('https://dog.ceo/api/breeds/image/random')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("dogImage").src = data.message;
+                    document.getElementById("dogImage").style.display = "block";
+                });
+        }
+
+        function getJoke() {
+            fetch('https://v2.jokeapi.dev/joke/Any?type=single')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("joke").innerText = data.joke;
+                });
+        }
+
+        function changeColor() {
+            const colors = ["#FFB6C1", "#FFD700", "#98FB98", "#87CEEB", "#FF6347", "#E6E6FA"];
+            document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        }
+    </script>
+
+</body>
 </html>
