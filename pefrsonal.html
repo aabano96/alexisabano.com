@@ -1,163 +1,249 @@
+Got it — one single file, copy-paste, upload to GitHub, done.
+
+Save the whole block below as **index.html**, commit & push, and your dull page is now a mini-party.
+
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Alexis' Fun & Useful Website</title>
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        h1, h2 {
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-        }
-        button {
-            background-color: #008CBA;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin: 10px;
-            cursor: pointer;
-            font-size: 16px;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #005f73;
-        }
-        input {
-            padding: 10px;
-            font-size: 16px;
-            margin: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 80%;
-        }
-        img {
-            margin-top: 15px;
-            max-width: 300px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
-        }
-        .result {
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Alexis’ Fun & Useful Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- quick styles -->
+  <style>
+    :root{--bg:#f4f4f4;--fg:#111;--accent:#008CBA;--card:#fff;--nav:rgba(255,255,255,.8);}
+    body.dark{--bg:#111;--fg:#eee;--accent:#ff9800;--card:#222;--nav:rgba(0,0,0,.8);}
+    body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--fg);transition:.3s;}
+    nav{position:fixed;top:0;left:0;right:0;background:var(--nav);backdrop-filter:blur(8px);padding:8px 16px;display:flex;gap:8px;z-index:1000;box-shadow:0 2px 6px rgba(0,0,0,.15);}
+    nav span{font-weight:700;margin-right:auto;}
+    button{background:var(--accent);color:#fff;border:none;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:14px;}
+    button:hover{filter:brightness(1.15);}
+    header{text-align:center;padding:80px 20px 40px;}
+    h1{margin:0;font-size:2.2em;}
+    section{max-width:900px;margin:0 auto 40px;padding:0 20px;}
+    .card{background:var(--card);border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:20px;margin:15px 0;}
+    .card canvas{border:2px solid var(--accent);}
+    .tool{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0;}
+    .tool input{flex:1 1 120px;padding:6px;border:1px solid #888;border-radius:4px;}
+    #mole-field{display:grid;grid-template-columns:repeat(3,70px);gap:8px;justify-content:center;margin:auto;}
+    .mole-hole{width:70px;height:70px;border-radius:50%;background:#654321;cursor:pointer;position:relative;}
+    .mole-hole.up::after{content:'🐹';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:30px;}
+    #reaction-box{width:180px;height:100px;background:crimson;border-radius:8px;margin:auto;color:#fff;font-weight:bold;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+    footer{text-align:center;padding:20px;font-size:.9em;}
+    img{max-width:100%;border-radius:8px;margin-top:8px;}
+  </style>
 </head>
+
 <body>
+<nav>
+  <span>🎲 Alexis.fun</span>
+  <button onclick="toggleTheme()">🌗</button>
+</nav>
 
-    <div class="container">
-        <h1>Contact Information</h1>
-        <p>You can reach me at <a href="mailto:mail@alexisabano.com">mail@alexisabano.com</a> or at +63 976 003 0238.</p>
-        
-        <h2>📅 How Many Days Between?</h2>
-        <input type="date" id="startDate"> to <input type="date" id="endDate">
-        <button onclick="calculateDays()">Calculate</button>
-        <p class="result" id="daysResult"></p>
+<header>
+  <h1>Alexis’ <span style="background:linear-gradient(90deg,red,orange,yellow,green,blue);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Playground</span></h1>
+  <p>Scroll for games, tools, & giggles.</p>
+</header>
 
-        <h2>💰 GST Calculator (Australian Real Estate)</h2>
-        <input type="number" id="gstInput" placeholder="Enter Price in AUD">
-        <button onclick="addGST()">Add 10% GST</button>
-        <button onclick="removeGST()">Remove 10% GST</button>
-        <p class="result" id="gstResult"></p>
+<!-- GAMES -->
+<section>
+  <h2>🕹️ Mini Games</h2>
 
-        <h2>🎉 Fun Stuff</h2>
+  <!-- Snake -->
+  <div class="card">
+    <h3>Snake</h3>
+    <canvas id="snake" width="300" height="300"></canvas><br>
+    <button onclick="startSnake()">Start / Restart</button>
+    <small>(Arrow keys to move)</small>
+  </div>
 
-        <button onclick="getCat()">🐱 Show Me a Random Cat</button>
-        <br>
-        <img id="catImage" src="" alt="Random Cat" style="display:none;">
+  <!-- Whack-a-Mole -->
+  <div class="card">
+    <h3>Whack-a-Mole</h3>
+    <div id="mole-field"></div>
+    <p>Score: <span id="mole-score">0</span></p>
+    <button onclick="startMole()">Play</button>
+  </div>
 
-        <button onclick="getDog()">🐶 Show Me a Random Dog</button>
-        <br>
-        <img id="dogImage" src="" alt="Random Dog" style="display:none;">
+  <!-- Reaction -->
+  <div class="card">
+    <h3>Reaction Time</h3>
+    <div id="reaction-box" onclick="react()">Wait for green…</div>
+    <p id="reaction-result"></p>
+    <button onclick="resetReaction()">Reset</button>
+  </div>
+</section>
 
-        <button onclick="getJoke()">😂 Tell Me a Joke</button>
-        <p id="joke"></p>
+<!-- TOOLS -->
+<section>
+  <h2>🔧 Quick Tools</h2>
 
-        <button onclick="changeColor()">🎨 Change Background Color</button>
-
-        <p>Looking forward to hearing from you.</p>
+  <!-- Days between -->
+  <div class="card">
+    <h3>Days Between</h3>
+    <div class="tool">
+      <input type="date" id="startDate">
+      <span>to</span>
+      <input type="date" id="endDate">
+      <button onclick="calculateDays()">Calc</button>
     </div>
+    <p id="daysResult"></p>
+  </div>
 
-    <script>
-        function getCat() {
-            fetch('https://api.thecatapi.com/v1/images/search')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("catImage").src = data[0].url;
-                    document.getElementById("catImage").style.display = "block";
-                });
-        }
+  <!-- GST -->
+  <div class="card">
+    <h3>GST (AU)</h3>
+    <div class="tool">
+      <input id="gstInput" type="number" placeholder="AUD">
+      <button onclick="addGST()">+10%</button>
+      <button onclick="removeGST()">-10%</button>
+    </div>
+    <p id="gstResult"></p>
+  </div>
 
-        function getDog() {
-            fetch('https://dog.ceo/api/breeds/image/random')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("dogImage").src = data.message;
-                    document.getElementById("dogImage").style.display = "block";
-                });
-        }
+  <!-- QR generator -->
+  <div class="card">
+    <h3>QR Generator</h3>
+    <div class="tool">
+      <input id="qrText" placeholder="Type here…">
+      <button onclick="generateQR()">Create</button>
+    </div>
+    <img id="qrImg" style="display:none;">
+  </div>
 
-        function getJoke() {
-            fetch('https://v2.jokeapi.dev/joke/Any?type=single')
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("joke").innerText = data.joke;
-                });
-        }
+  <!-- Password -->
+  <div class="card">
+    <h3>Password Generator</h3>
+    <div class="tool">
+      <button onclick="genPwd()">Generate</button>
+      <input id="pwdOut" readonly>
+    </div>
+  </div>
+</section>
 
-        function changeColor() {
-            const colors = ["#FFB6C1", "#FFD700", "#98FB98", "#87CEEB", "#FF6347", "#E6E6FA"];
-            document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        }
+<!-- FUN -->
+<section>
+  <h2>😂 Fun Stuff</h2>
+  <button onclick="getCat()">🐱 Cat</button>
+  <button onclick="getDog()">🐶 Dog</button>
+  <button onclick="getJoke()">😆 Joke</button>
+  <button onclick="confetti()">🎉 Confetti</button>
+  <br>
+  <img id="catImage" style="display:none;">
+  <img id="dogImage" style="display:none;">
+  <p id="joke"></p>
+</section>
 
-        function calculateDays() {
-            let start = new Date(document.getElementById("startDate").value);
-            let end = new Date(document.getElementById("endDate").value);
+<footer>
+  <p>Reach me: <a href="mailto:mail@alexisabano.com">mail@alexisabano.com</a> | +63 976 003 0238</p>
+</footer>
 
-            if (isNaN(start) || isNaN(end)) {
-                document.getElementById("daysResult").innerText = "Please select both dates.";
-                return;
-            }
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+<script>
+/* -------- THEME -------- */
+const toggleTheme = () => document.body.classList.toggle('dark');
 
-            let difference = Math.abs(end - start);
-            let daysBetween = difference / (1000 * 60 * 60 * 24);
+/* -------- UTILS -------- */
+const daysResult = document.getElementById('daysResult');
+const gstResult  = document.getElementById('gstResult');
+function calculateDays(){
+  const s=new Date(document.getElementById('startDate').value);
+  const e=new Date(document.getElementById('endDate').value);
+  if(isNaN(s)||isNaN(e)){daysResult.innerText='Pick both dates';return;}
+  daysResult.innerText = Math.abs(e-s)/864e5 + ' day(s)';
+}
+function addGST(){
+  const v=+document.getElementById('gstInput').value;
+  gstResult.innerText = v ? 'AUD '+(v*1.1).toFixed(2) : 'Invalid';
+}
+function removeGST(){
+  const v=+document.getElementById('gstInput').value;
+  gstResult.innerText = v ? 'AUD '+(v/1.1).toFixed(2) : 'Invalid';
+}
+function generateQR(){
+  const t=document.getElementById('qrText').value.trim();
+  if(!t)return;
+  document.getElementById('qrImg').src=`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(t)}`;
+  document.getElementById('qrImg').style.display='block';
+}
+function genPwd(){
+  const c='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+  let p='';
+  for(let i=0;i<16;i++)p+=c[Math.floor(Math.random()*c.length)];
+  document.getElementById('pwdOut').value=p;
+}
 
-            document.getElementById("daysResult").innerText = `Days Between: ${daysBetween} days`;
-        }
+/* -------- FUN -------- */
+const getCat = () => fetch('https://api.thecatapi.com/v1/images/search')
+  .then(r=>r.json()).then(d=>{document.getElementById('catImage').src=d[0].url;document.getElementById('catImage').style.display='block'});
+const getDog = () => fetch('https://dog.ceo/api/breeds/image/random')
+  .then(r=>r.json()).then(d=>{document.getElementById('dogImage').src=d.message;document.getElementById('dogImage').style.display='block'});
+const getJoke = () => fetch('https://v2.jokeapi.dev/joke/Any?type=single')
+  .then(r=>r.json()).then(d=>document.getElementById('joke').innerText=d.joke);
+const confetti = () => window.confetti({particleCount:120,spread:70});
 
-        function addGST() {
-            let amount = parseFloat(document.getElementById("gstInput").value);
-            if (isNaN(amount)) {
-                document.getElementById("gstResult").innerText = "Please enter a valid amount.";
-                return;
-            }
-            let total = amount * 1.1;
-            document.getElementById("gstResult").innerText = `Price with GST: AUD ${total.toFixed(2)}`;
-        }
+/* -------- SNAKE -------- */
+let snake,dir,food,loop;
+function startSnake(){
+  const c=document.getElementById('snake'),ctx=c.getContext('2d'),sz=20,w=c.width,h=c.height;
+  snake=[{x:5*sz,y:5*sz}]; dir={x:sz,y:0}; food={x:Math.floor(Math.random()*w/sz)*sz,y:Math.floor(Math.random()*h/sz)*sz};
+  clearInterval(loop);
+  loop=setInterval(()=>{
+    const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    if(head.x<0||head.x>=w||head.y<0||head.y>=h||snake.some(s=>s.x===head.x&&s.y===head.y))
+      return clearInterval(loop),alert('Game Over!');
+    snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y) food={x:Math.floor(Math.random()*w/sz)*sz,y:Math.floor(Math.random()*h/sz)*sz};
+    else snake.pop();
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle='lime'; snake.forEach(s=>ctx.fillRect(s.x,s.y,sz,sz));
+    ctx.fillStyle='red'; ctx.fillRect(food.x,food.y,sz,sz);
+  },120);
+}
+window.addEventListener('keydown',e=>{
+  if(e.code==='ArrowUp'&&dir.y===0) dir={x:0,y:-20};
+  else if(e.code==='ArrowDown'&&dir.y===0) dir={x:0,y:20};
+  else if(e.code==='ArrowLeft'&&dir.x===0) dir={x:-20,y:0};
+  else if(e.code==='ArrowRight'&&dir.x===0) dir={x:20,y:0};
+});
 
-        function removeGST() {
-            let amount = parseFloat(document.getElementById("gstInput").value);
-            if (isNaN(amount)) {
-                document.getElementById("gstResult").innerText = "Please enter a valid amount.";
-                return;
-            }
-            let total = amount / 1.1;
-            document.getElementById("gstResult").innerText = `Price without GST: AUD ${total.toFixed(2)}`;
-        }
-    </script>
+/* -------- WHACK-A-MOLE -------- */
+let moleScore=0,moleTimer;
+function startMole(){
+  moleScore=0; document.getElementById('mole-score').innerText=0;
+  const f=document.getElementById('mole-field'); f.innerHTML='';
+  for(let i=0;i<9;i++){
+    const h=document.createElement('div'); h.className='mole-hole';
+    h.onclick=()=>{if(h.classList.contains('up')){moleScore++;document.getElementById('mole-score').innerText=moleScore;h.classList.remove('up');}};
+    f.appendChild(h);
+  }
+  const pop=()=>{
+    const holes=f.children;
+    [...holes].forEach(h=>h.classList.remove('up'));
+    [...holes][Math.floor(Math.random()*9)].classList.add('up');
+    moleTimer=setTimeout(pop,800);
+  };
+  pop();
+  setTimeout(()=>clearTimeout(moleTimer),20000);
+}
 
+/* -------- REACTION -------- */
+let reactionStart,timer;
+function resetReaction(){
+  const box=document.getElementById('reaction-box');
+  box.style.background='crimson';
+  document.getElementById('reaction-result').innerText='';
+  timer=setTimeout(()=>{box.style.background='lime';reactionStart=Date.now();},Math.random()*3000+1000);
+}
+function react(){
+  if(!reactionStart)return;
+  document.getElementById('reaction-result').innerText=(Date.now()-reactionStart)+' ms';
+  clearTimeout(timer);
+  reactionStart=0;
+}
+resetReaction();
+</script>
 </body>
 </html>
+```
